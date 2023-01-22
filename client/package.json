@@ -1,8 +1,8 @@
 {
-  "name": "catstronauts-client",
+  "name": "my-startup-progress-client",
   "version": "1.0.0",
   "private": true,
-  "description": "front-end demo app for Apollo's lift-off course",
+  "description": "Frontend for My Startup Progress",
   "dependencies": {
     "@apollo/client": "^3.7.4",
     "@apollo/space-kit": "^9.3.1",
@@ -57,6 +57,6 @@
     "tailwindcss": "^3.2.4"
   },
   "main": "src/index.js",
-  "author": "Raphael Terrier @R4ph-t",
+  "author": "Radu Bagrin",
   "license": "MIT"
 }
