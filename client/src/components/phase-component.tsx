@@ -7,9 +7,13 @@ interface PhaseProps {
 
 export const PhaseComponent = ({ phase }: PhaseProps) => {
     return <div>
-        <h3>{phase.id} - {phase.name}</h3>
+        <div className='flex flex-row gap-5'>
+            <input type="checkbox" checked={phase.completed} disabled />
+            <h3>{phase.id} - {phase.name}</h3>
+        </div>
         <h6>{phase.description}</h6>
         <p>Tasks: {JSON.stringify(phase.tasks)}</p>
+        
         <p>{phase.completed ? "COMPLETED" : "INCOMPLETE"}</p>
     </div>
 }

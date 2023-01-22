@@ -14,3 +14,8 @@ export interface Task {
     phaseId: string;
     phase: Phase;
 }
+
+export interface RandomFact {
+    readonly id: string;
+    readonly text: string;
+}

@@ -32,6 +32,18 @@ export const GET_PHASE_BY_ID = gql`
     }
 `
 
+export const GET_RANDOM_FACT_ON_PHASE_COMPLETION = gql`
+query Query {
+    getRandomFact {
+            id
+            text
+            source
+            source_url
+            language
+            permalink
+        }
+    }
+`
 export const MARK_TASK_AS_COMPLETED = gql`
     mutation MarkTaskAsComplete($taskId: ID!) {
         markTaskAsComplete(taskId: $taskId) {
