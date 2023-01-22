@@ -1,12 +1,11 @@
 import React from "react";
-
-import { Phase } from "../interfaces";
+import { useNavigate } from "react-router-dom";
+import { useMutation } from "@apollo/client";
 import { FaCheckCircle, FaTrash, FaRedoAlt } from "react-icons/fa";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 
-import { useMutation } from "@apollo/client";
+import { Phase } from "../interfaces";
 import Mutations from "../graphql/mutations";
-import { useNavigate } from "react-router-dom";
 import { HOME_ROUTE } from "../routes";
 import Queries from "../graphql/queries";
 

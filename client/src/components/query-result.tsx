@@ -15,7 +15,7 @@ export const QueryResult = ({
   data,
   children,
 }: QueryResultProps) => {
-  if (error) return <p>Error: {error.message}</p>;
+  if (error) return <p className="text-red-500">Error: {error.message}</p>;
 
   if (loading) return <p>Loading...</p>;
 

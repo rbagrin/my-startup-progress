@@ -96,10 +96,10 @@ export default class MockDB {
     await sleep(50);
     const task = this.TASKS.find((t) => t.id === taskId);
     if (!task) throw new ApolloError("Phase not found!", "404");
-    task.completed = true;
-
     const phase = this.PHASES.find((p) => p.id === task.phaseId);
     if (!phase) throw new ApolloError("Phase not found!", "404");
+
+    task.completed = true;
 
     this.setPhaseCompletionState(phase);
 
@@ -112,13 +112,12 @@ export default class MockDB {
     await sleep(50);
     const task = this.TASKS.find((t) => t.id === taskId);
     if (!task) throw new ApolloError("Phase not found!", "404");
-    task.completed = false;
-
     const phase = this.PHASES.find((p) => p.id === task.phaseId);
     if (!phase) throw new ApolloError("Phase not found!", "404");
 
-    this.setPhaseCompletionState(phase);
+    task.completed = false;
 
+    this.setPhaseCompletionState(phase);
     this.validateEntirePhaseList();
 
     return { task, phase };
@@ -169,7 +168,7 @@ export default class MockDB {
     if (!phase) throw new ApolloError("Phase not found!", "404");
 
     this.TASKS = this.TASKS.filter(
-      (t) => t.id !== taskId || t.phaseId !== phaseId
+      (task) => task.id !== taskId || task.phaseId !== phaseId
     );
 
     phase.tasks = phase.tasks.filter((t) => t.id !== taskId);
@@ -194,36 +193,34 @@ export default class MockDB {
     return this.PHASES;
   }
 
+  /**
+   * Mark the fase as completed if all its tasks are completed, otherwise mark the phase as not completed
+   * @param phase { Phase }
+   */
   private setPhaseCompletionState(phase: Phase): void {
     const tasksExistAndAllAreCompleted =
       phase.tasks.length > 0 && !phase.tasks.some((task) => !task.completed);
     phase.completed = tasksExistAndAllAreCompleted;
   }
 
+  /**
+   * Loop through the phases list and once you find one that is not completed, make sure all the following phases and their tasks are marked as incomplete
+   */
   private validateEntirePhaseList(): void {
     let foundFirstIncompleteList = false;
 
     for (let i = 0; i < this.PHASES.length; i += 1) {
       // If previously found a incomplete phase mark all the next phases and their tasks as incomplete
-      console.log(
-        `START: i = ${i}, foundFirst = ${foundFirstIncompleteList}, phaseStatus=${this.PHASES[i].completed}`
-      );
-
       if (foundFirstIncompleteList) {
-        console.log("MARK phase i as not complete");
-
         this.PHASES[i].completed = false;
         for (let j = 0; j < this.PHASES[i].tasks.length; j += 1) {
-          console.log(`mark task ${j} of phase ${i} as not complete`);
           this.PHASES[i].tasks[j].completed = false;
         }
       }
 
       // If the first incomplete phase was found or the current phase is incomplete mark foundFirstIncompleteList = true
       foundFirstIncompleteList =
-        foundFirstIncompleteList || !this.PHASES[i].completed; //tasks.some((task) => !task.completed);
-
-      console.log(`END: i = ${i}, foundFirst = ${foundFirstIncompleteList}`);
+        foundFirstIncompleteList || !this.PHASES[i].completed;
     }
   }
 }

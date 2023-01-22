@@ -6,11 +6,11 @@ import { FaCheckCircle, FaArrowAltCircleRight } from "react-icons/fa";
 import { RiCheckboxBlankCircleLine } from "react-icons/ri";
 import { PHASE_DETAILS_ROUTE } from "../routes";
 
-interface PhaseProps {
+interface PhaseComponentProps {
   phase: Phase;
 }
 
-export const PhaseComponent = ({ phase }: PhaseProps) => {
+export const PhaseComponent = ({ phase }: PhaseComponentProps) => {
   const navigate = useNavigate();
 
   const totalTasks = phase.tasks.length;

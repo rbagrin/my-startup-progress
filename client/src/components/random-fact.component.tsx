@@ -14,6 +14,7 @@ export const RandomFactComponent = () => {
   } = useQuery<{ randomFact: RandomFact }>(
     Queries.GET_RANDOM_FACT_ON_PHASE_COMPLETION
   );
+
   return (
     <div className="mt-10">
       <QueryResult loading={loading} error={error} data={randomFactData}>
