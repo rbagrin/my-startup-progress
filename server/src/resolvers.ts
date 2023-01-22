@@ -66,6 +66,27 @@ export const resolvers = {
                 }
             }
         },
+        async markTaskAsIncomplete(_: any, args: { taskId: string }, { dataSources }: ResolverContext): Promise<any> {
+            try {
+                const { task, phase } = await dataSources.mockDB.markTaskAsIncomplete(args.taskId);
+
+                return {
+                    code: 200,
+                    success: true,
+                    message: `Successfully marked task with taskId = ${args.taskId} as incomplete.`,
+                    task,
+                    phase,
+                }
+            } catch(error) {
+                return {
+                    code: error.extensions.response.status,
+                    success: false,
+                    message: error.extensions.response.body,
+                    task: null,
+                    phase: null,
+                }
+            }
+        },
         async addTaskToPhase(_: any, args: { phaseId: string, taskDescription: string }, { dataSources }: ResolverContext): Promise<any> {
            try {
                 const { task, phase } = await dataSources.mockDB.addTaskToPhase(args.phaseId, args.taskDescription);
@@ -92,7 +113,7 @@ export const resolvers = {
                 return {
                     code: 200,
                     success: true,
-                    message: "Task added successfully",
+                    message: "Task successfully added",
                     phase
                 };
             } catch(error) {
@@ -103,6 +124,40 @@ export const resolvers = {
                     phase: null,
                 };
             }
-        } 
+        } ,
+        async deleteTask(_: any, args: { phaseId: string, taskId: string }, { dataSources }: ResolverContext): Promise<any> {
+            try {
+                const phase = dataSources.mockDB.deletePhaseTask(args.phaseId, args.taskId);
+                return {
+                    code: 200,
+                    success: true,
+                    message: "Task successfully deleted",
+                    phase
+                };
+            } catch(error) {
+                return {
+                    code: error.extensions.response.status,
+                    success: false,
+                    message: error.extensions.response.body,
+                    phase: null,
+                };
+            }
+        },
+        async deletePhase(_: any, args: { phaseId: string }, { dataSources }: ResolverContext): Promise<any> {
+            try {
+                await dataSources.mockDB.deletePhase(args.phaseId);
+                return {
+                    code: 200,
+                    success: true,
+                    message: "Phase successfully deleted",
+                };
+            } catch(error) {
+                return {
+                    code: error.extensions.response.status,
+                    success: false,
+                    message: error.extensions.response.body,
+                };
+            }
+        }
     }
 };

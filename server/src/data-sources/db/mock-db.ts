@@ -71,7 +71,24 @@ export default class MockDB {
         if (!task) throw new ApolloError('Phase not found!', "404");
         task.completed = true;
 
-        const phase = await this.setPhaseCompletionState(task.phaseId);
+        const phase = this.PHASES.find((p) => p.id === task.phaseId);
+        if (!phase) throw new ApolloError('Phase not found!', "404");
+
+        this.setPhaseCompletionState(phase);
+
+        return { task, phase };
+    }
+
+    async markTaskAsIncomplete(taskId: string): Promise<{ task: Task, phase: Phase }> {
+        await sleep(50);
+        const task = this.TASKS.find((t) => t.id === taskId);
+        if (!task) throw new ApolloError('Phase not found!', "404");
+        task.completed = false;
+
+        const phase = this.PHASES.find((p) => p.id === task.phaseId);
+        if (!phase) throw new ApolloError('Phase not found!', "404");
+
+        this.setPhaseCompletionState(phase);
 
         return { task, phase };
     }
@@ -109,15 +126,36 @@ export default class MockDB {
         return phase;
     }
 
-    private async setPhaseCompletionState(phaseId: string): Promise<Phase> {
+    async deletePhaseTask(phaseId: string, taskId: string): Promise<Phase> {
         await sleep(50);
         const phase = this.PHASES.find((p) => p.id === phaseId);
         if (!phase) throw new ApolloError('Phase not found!', "404");
 
-        const areAllPhaseTaskCompleted = !phase.tasks.some((task) => !task.completed);
-        phase.completed = areAllPhaseTaskCompleted;
-        
+        this.TASKS = this.TASKS.filter((t) => t.id !== taskId || t.phaseId !== phaseId);
+
+        phase.tasks = phase.tasks.filter((t) => t.id !== taskId);
+
+        this.setPhaseCompletionState(phase);
+
         return phase;
+    }
+
+    async deletePhase(phaseId: string): Promise<void> {
+        await sleep(50);
+        const phase = this.PHASES.find((p) => p.id === phaseId);
+        if (!phase) throw new ApolloError('Phase not found!', "404");
+
+        // Delete the task of the phase
+        const phaseTasksIds = phase.tasks.map((task) => task.id);
+        this.TASKS = this.TASKS.filter((task) => !phaseTasksIds.includes(task.id));
+
+        // Delete the phase
+        this.PHASES = this.PHASES.filter((phase) => phase.id !== phaseId);
+    }
+
+    private setPhaseCompletionState(phase: Phase): void {
+        const tasksExistAndAllAreCompleted = phase.tasks.length > 0 && !phase.tasks.some((task) => !task.completed);
+        phase.completed = tasksExistAndAllAreCompleted;
     }
 }
 
