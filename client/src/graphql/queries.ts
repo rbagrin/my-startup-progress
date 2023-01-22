@@ -32,15 +32,14 @@ export default class Queries {
                 completed
             }
         }
-    `
+    `;
 
-    public static GET_TASK_BY_ID = gql`
-        query Query($taskId: String!) {
-            task(id: $taskId) {
+    public static GET_PHASE_TASK_BY_ID = gql`
+        query Query($phaseId: ID!, $taskId: ID!) {
+            task(phaseId: $phaseId, id: $taskId) {
                 id
                 description
                 completed
-                phaseId
                 phase {
                     id
                     name
@@ -49,7 +48,7 @@ export default class Queries {
                 }
             }
         }
-    `
+    `;
 
     public static GET_RANDOM_FACT_ON_PHASE_COMPLETION = gql`
     query Query {

@@ -40,9 +40,12 @@ export default class MockDB {
         return this.TASKS;
     }
 
-    async findTaskById(id: string): Promise<Task> {
+    async findPhaseTaskById(phaseId: string, taskId: string): Promise<Task> {
         await sleep(50);
-        return this.TASKS.find((task) => id === task.id);
+        const phase = this.PHASES.find((phase) => phaseId === phase.id);
+        if (!phase) throw new ApolloError('Phase not found!', "404");
+
+        return phase.tasks.find((task) => taskId === task.id);
     };
     
     async findAllPhases(): Promise<Phase[]> {

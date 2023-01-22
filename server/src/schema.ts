@@ -35,8 +35,8 @@ const typeDefs = gql`
         "GET all phases"
         phases: [Phase!]!
 
-        "GET TASK BY ID"
-        task(id: String!): Task
+        "GET PHASE TASK BY ID"
+        task(phaseId: ID!, id: ID!): Task
 
         "GET a random task"
         getRandomFact: RandomFact
