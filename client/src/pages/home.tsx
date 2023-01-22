@@ -25,7 +25,7 @@ const Home = () => {
         </QueryResult> */}
         <QueryResult loading={getPhasesLoading} error={getPhasesError} data={getPhasesData}>
             <div>
-                {getPhasesData?.phases.map((phase) => <PhaseComponent phase={phase} />)}
+                {getPhasesData?.phases!.map((phase) => <PhaseComponent phase={phase} />)}
             </div>
         </QueryResult>
     </div>;

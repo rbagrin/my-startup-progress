@@ -1,38 +1,36 @@
 import React from 'react';
-import { useQuery, useMutation } from "@apollo/client";
+import { useQuery } from "@apollo/client";
+import { FaHome } from 'react-icons/fa';
+
 import { QueryResult } from '../components/query-result';
-import { PhaseComponent } from '../components/phase-component';
 import { Phase } from '../interfaces';
-import { useParams } from 'react-router-dom';
-import Button from '../components/button';
+import { useNavigate, useParams } from 'react-router-dom';
 import Queries from '../graphql/queries';
-import Mutations from '../graphql/mutations';
+import { PhaseDetailsComponent } from '../components/phase-details.component';
+import { AddTaskComponent } from '../components/add-task.component';
+import { PHASES_ROUTE } from '../routes';
 
 
 const PhaseDetails = () => {
   const { phaseId } = useParams<{ readonly phaseId: string }>();
   const { loading, error, data } = useQuery<{ phase: Phase }>(Queries.GET_PHASE_BY_ID, { variables: { phaseId }});
 
-  const [markTaskAsComplete] = useMutation(Mutations.MARK_TASK_AS_COMPLETED, { 
-    variables: { taskId: 't2' },
-    onCompleted: (data) => {
-      console.log(data);
-    }
-  });
+  const navigate = useNavigate();
 
   return <div>
+    <div className='flex flex-row gap-5 mb-5 cursor-pointer w-fit' onClick={() => navigate(PHASES_ROUTE)}>
+      <FaHome size={20} />
+      <p className='text-md font-bold'>My startup</p>
+    </div>
     <QueryResult loading={loading} error={error} data={data}>
-      <>
-        <h1>PHASE Details</h1>
+      <div>
         {data?.phase && (
-          <div>
-            <PhaseComponent phase={data.phase} />
-          </div>
+          <PhaseDetailsComponent phase={data.phase} />
         )}
-      </>
+      </div>
     </QueryResult>
 
-    <Button text='Mark task as completed' onClick={() => markTaskAsComplete()} />
+    <AddTaskComponent phaseId={phaseId!} />
   </div>;
 };
 
