@@ -1,6 +1,7 @@
 # My Startup Progress
 ### TODOs
 - [X] Design database schema.
+- [ ] Store FE data in local storage (not sure what should I store in the local storage right now?).
 - [ ] Right now the order of the phases is the order the phases were added to the BD. Improve this using by adding `prev` and `next` Phase attritbutes.
 - [ ] Update task. Now you have to delete the task and add it again.
 - [ ] !!! Update phase. Now you have to delete the phase and all the following phases, then you have to add all of them + all their tasks again.
