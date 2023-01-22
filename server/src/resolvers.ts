@@ -88,7 +88,7 @@ export const resolvers = {
             }
         },
         async addTaskToPhase(_: any, args: { phaseId: string, taskDescription: string }, { dataSources }: ResolverContext): Promise<any> {
-           try {
+           try {            
                 const { task, phase } = await dataSources.mockDB.addTaskToPhase(args.phaseId, args.taskDescription);
                 return {
                     code: 200,
@@ -109,19 +109,19 @@ export const resolvers = {
         },
         async addPhase(_: any, args: { name: string, phaseDescription: string}, { dataSources }: ResolverContext): Promise<any> {
             try {
-                const phase = await dataSources.mockDB.addPhase(args.name, args.phaseDescription);
+                const phases = await dataSources.mockDB.addPhase(args.name, args.phaseDescription);
                 return {
                     code: 200,
                     success: true,
                     message: "Task successfully added",
-                    phase
+                    phases
                 };
             } catch(error) {
                 return {
                     code: error.extensions.response.status,
                     success: false,
                     message: error.extensions.response.body,
-                    phase: null,
+                    phases: null,
                 };
             }
         } ,
@@ -145,17 +145,19 @@ export const resolvers = {
         },
         async deletePhase(_: any, args: { phaseId: string }, { dataSources }: ResolverContext): Promise<any> {
             try {
-                await dataSources.mockDB.deletePhase(args.phaseId);
+                const phases = await dataSources.mockDB.deletePhase(args.phaseId);
                 return {
                     code: 200,
                     success: true,
                     message: "Phase successfully deleted",
+                    phases,
                 };
             } catch(error) {
                 return {
                     code: error.extensions.response.status,
                     success: false,
                     message: error.extensions.response.body,
+                    phases: null,
                 };
             }
         }

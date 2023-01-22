@@ -1,5 +1,5 @@
 import  { ApolloError } from "apollo-server";
-import { uuid } from "uuidv4";
+import { v4 as uuid_v4 } from "uuid";
 import { Task, Phase } from "../../interfaces";
 import { sleep } from "../../util/helpers";
 
@@ -9,24 +9,24 @@ export default class MockDB {
 
     constructor() {
         const PHASE1: Phase = {
-            id: 'p1',
+            id: uuid_v4(),
             name: 'Phase 1',
             description: 'This is phase 1',
             completed: false,
             tasks: [],
         };
         const TASK1: Task = {
-            id: 't1',
+            id: uuid_v4(),
             description: 'aDSADa sd ad sa dsa dsafs bi',
             completed: true,
-            phaseId: 'p1',
+            phaseId: PHASE1.id,
             phase: PHASE1,
         }
         const TASK2: Task = {
-            id: 't2',
+            id: uuid_v4(),
             description: 'dsiadiah dsa dad sa dsa dsa',
             completed: false,
-            phaseId: 'p1',
+            phaseId: PHASE1.id,
             phase: PHASE1,
         }
         PHASE1.tasks = [TASK1, TASK2];
@@ -102,23 +102,23 @@ export default class MockDB {
         if (!phase) throw new ApolloError('Phase not found!', "404");
 
         const task: Task = {
-            id: uuid(),
+            id: uuid_v4(),
             description: taskDescription,
             completed: false,
             phaseId,
             phase
         };
-
+        
         phase.tasks.push(task);
         this.TASKS.push(task);
 
         return { task, phase };
     }
 
-    async addPhase(name: string, description: string): Promise<Phase> {
+    async addPhase(name: string, description: string): Promise<Phase[]> {
         await sleep(50);
         const phase: Phase = {
-            id: uuid(),
+            id: uuid_v4(),
             name,
             description,
             tasks: [],
@@ -126,7 +126,7 @@ export default class MockDB {
         };
 
         this.PHASES.push(phase);
-        return phase;
+        return this.PHASES;
     }
 
     async deletePhaseTask(phaseId: string, taskId: string): Promise<Phase> {
@@ -143,7 +143,7 @@ export default class MockDB {
         return phase;
     }
 
-    async deletePhase(phaseId: string): Promise<void> {
+    async deletePhase(phaseId: string): Promise<Phase[]> {
         await sleep(50);
         const phase = this.PHASES.find((p) => p.id === phaseId);
         if (!phase) throw new ApolloError('Phase not found!', "404");
@@ -154,6 +154,8 @@ export default class MockDB {
 
         // Delete the phase
         this.PHASES = this.PHASES.filter((phase) => phase.id !== phaseId);
+
+        return this.PHASES;
     }
 
     private setPhaseCompletionState(phase: Phase): void {

@@ -46,7 +46,7 @@ export default class Mutations {
                 }
             }
         }
-    `;
+    `
 
     public static ADD_TASK_TO_PHASE = gql`
         mutation AddTaskToPhase($phaseId: ID!, $taskDescription: String!) {
@@ -75,7 +75,7 @@ export default class Mutations {
                 code
                 success
                 message
-                phase {
+                phases {
                     id
                     completed
                     description
@@ -117,6 +117,18 @@ export default class Mutations {
                 code
                 success
                 message
+                phases {
+                    id
+                    name
+                    description
+                    tasks {
+                        id
+                        description
+                        phaseId
+                        completed
+                    }
+                    completed
+                }
             }
         }
     `;

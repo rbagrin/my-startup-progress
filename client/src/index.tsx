@@ -7,7 +7,7 @@ import './index.css';
 ReactDOM.render(
   <React.StrictMode>
     <div className='flex justify-center items-center h-screen bg-blue-100'>
-      <div className='w-96 bg-white p-10 rounded-md'>
+      <div className='w-128 bg-white p-10 rounded-md'>
         <AppRouter />
       </div>
     </div>

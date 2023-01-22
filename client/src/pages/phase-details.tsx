@@ -8,7 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Queries from '../graphql/queries';
 import { PhaseDetailsComponent } from '../components/phase-details.component';
 import { AddTaskComponent } from '../components/add-task.component';
-import { PHASES_ROUTE } from '../routes';
+import { HOME_ROUTE } from '../routes';
 
 
 const PhaseDetails = () => {
@@ -18,7 +18,7 @@ const PhaseDetails = () => {
   const navigate = useNavigate();
 
   return <div>
-    <div className='flex flex-row gap-5 mb-5 cursor-pointer w-fit' onClick={() => navigate(PHASES_ROUTE)}>
+    <div className='flex flex-row gap-5 mb-5 cursor-pointer w-fit' onClick={() => navigate(HOME_ROUTE)}>
       <FaHome size={20} />
       <p className='text-md font-bold'>My startup</p>
     </div>

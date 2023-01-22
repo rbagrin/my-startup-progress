@@ -49,11 +49,11 @@ const typeDefs = gql`
 
         addTaskToPhase(phaseId: ID!, taskDescription: String!): TaskAndPhaseMutationResponse!
 
-        addPhase(name: String!, phaseDescription: String!): PhaseMutationResponse!
+        addPhase(name: String!, phaseDescription: String!): PhasesMutationResponse!
 
         deleteTask(phaseId: ID!, taskId: ID!): PhaseMutationResponse!
 
-        deletePhase(phaseId: ID!): MutationResponse!
+        deletePhase(phaseId: ID!): PhasesMutationResponse!
     }
 
     type TaskAndPhaseMutationResponse {
@@ -69,6 +69,13 @@ const typeDefs = gql`
         success: Boolean!
         message: String!
         phase: Phase
+    }
+
+    type PhasesMutationResponse {
+        code: Int!
+        success: Boolean!
+        message: String!
+        phases: [Phase!]
     }
 
     type MutationResponse {

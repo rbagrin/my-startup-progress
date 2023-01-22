@@ -17,7 +17,7 @@ export const AddTaskComponent = ({ phaseId }: AddTaskComponentProps) => {
     
     return (
         <div>
-            <div className="">
+            <div>
                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
                     Add new task
                 </label>
