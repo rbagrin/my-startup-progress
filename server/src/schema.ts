@@ -45,7 +45,9 @@ const typeDefs = gql`
     type Mutation {
         markTaskAsComplete(taskId: ID!): TaskAndPhaseMutationResponse!
 
-        # addTaskToPhase(phaseId: ID!, task: ): TaskAndPhaseMutationResponse!
+        addTaskToPhase(phaseId: ID!, taskDescription: String!): TaskAndPhaseMutationResponse!
+
+        addPhase(name: String!, phaseDescription: String!): PhaseMutationResponse! 
     }
 
     type TaskAndPhaseMutationResponse {
@@ -53,6 +55,13 @@ const typeDefs = gql`
         success: Boolean!
         message: String!
         task: Task
+        phase: Phase
+    }
+
+    type PhaseMutationResponse {
+        code: Int!
+        success: Boolean!
+        message: String!
         phase: Phase
     }
 `;

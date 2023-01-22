@@ -1,5 +1,5 @@
 import  { ApolloError } from "apollo-server";
-
+import { uuid } from "uuidv4";
 import { Task, Phase } from "../../interfaces";
 import { sleep } from "../../util/helpers";
 
@@ -74,6 +74,39 @@ export default class MockDB {
         const phase = await this.setPhaseCompletionState(task.phaseId);
 
         return { task, phase };
+    }
+
+    async addTaskToPhase(phaseId: string, taskDescription: string): Promise<{ task: Task, phase: Phase }> {
+        await sleep(50);
+        const phase = this.PHASES.find((p) => p.id === phaseId);
+        if (!phase) throw new ApolloError('Phase not found!', "404");
+
+        const task: Task = {
+            id: uuid(),
+            description: taskDescription,
+            completed: false,
+            phaseId,
+            phase
+        };
+
+        phase.tasks.push(task);
+        this.TASKS.push(task);
+
+        return { task, phase };
+    }
+
+    async addPhase(name: string, description: string): Promise<Phase> {
+        await sleep(50);
+        const phase: Phase = {
+            id: uuid(),
+            name,
+            description,
+            tasks: [],
+            completed: false,
+        };
+
+        this.PHASES.push(phase);
+        return phase;
     }
 
     private async setPhaseCompletionState(phaseId: string): Promise<Phase> {

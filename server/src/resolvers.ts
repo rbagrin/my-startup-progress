@@ -65,6 +65,44 @@ export const resolvers = {
                     phase: null,
                 }
             }
-        }
+        },
+        async addTaskToPhase(_: any, args: { phaseId: string, taskDescription: string }, { dataSources }: ResolverContext): Promise<any> {
+           try {
+                const { task, phase } = await dataSources.mockDB.addTaskToPhase(args.phaseId, args.taskDescription);
+                return {
+                    code: 200,
+                    success: true,
+                    message: "Task added successfully",
+                    task,
+                    phase
+                };
+           } catch(error) {
+                return {
+                    code: error.extensions.response.status,
+                    success: false,
+                    message: error.extensions.response.body,
+                    task: null,
+                    phase: null,
+                };
+           }
+        },
+        async addPhase(_: any, args: { name: string, phaseDescription: string}, { dataSources }: ResolverContext): Promise<any> {
+            try {
+                const phase = await dataSources.mockDB.addPhase(args.name, args.phaseDescription);
+                return {
+                    code: 200,
+                    success: true,
+                    message: "Task added successfully",
+                    phase
+                };
+            } catch(error) {
+                return {
+                    code: error.extensions.response.status,
+                    success: false,
+                    message: error.extensions.response.body,
+                    phase: null,
+                };
+            }
+        } 
     }
 };
