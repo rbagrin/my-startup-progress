@@ -1,21 +1,20 @@
 export interface Phase {
-    id: string;
-    name: string;
-    description: string | undefined;
-    completed: boolean;
-    tasks: Task[];
+  id: string;
+  name: string;
+  description: string | undefined;
+  completed: boolean;
+  tasks: Task[];
 }
 
-
 export interface Task {
-    id: string;
-    description: string;
-    completed: boolean;
-    phaseId: string;
-    phase: Phase;
+  id: string;
+  description: string;
+  completed: boolean;
+  phaseId: string;
+  phase: Phase;
 }
 
 export interface RandomFact {
-    readonly id: string;
-    readonly text: string;
+  readonly id: string;
+  readonly text: string;
 }
