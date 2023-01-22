@@ -3,13 +3,13 @@ import { useQuery } from "@apollo/client";
 import Button from '../components/button';
 import { useNavigate } from 'react-router-dom';
 import { PHASES_ROUTE } from '../routes';
-import { GET_RANDOM_FACT_ON_PHASE_COMPLETION } from '../queries/phase.queries';
 import { QueryResult } from '../components/query-result';
 import { RandomFact } from '../interfaces';
 import { RandomFactComponent } from '../components/random-fact.component';
+import Queries from '../graphql/queries';
 
 const Home = () => {
-    const { loading, error, data } = useQuery<{ getRandomFact: RandomFact }>(GET_RANDOM_FACT_ON_PHASE_COMPLETION);
+    const { loading, error, data } = useQuery<{ getRandomFact: RandomFact }>(Queries.GET_RANDOM_FACT_ON_PHASE_COMPLETION);
 
     const navigate = useNavigate();
     return <div>

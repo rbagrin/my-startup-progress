@@ -3,16 +3,17 @@ import { useQuery, useMutation } from "@apollo/client";
 import { QueryResult } from '../components/query-result';
 import { PhaseComponent } from '../components/phase-component';
 import { Phase } from '../interfaces';
-import { GET_PHASE_BY_ID, MARK_TASK_AS_COMPLETED } from '../queries/phase.queries';
 import { useParams } from 'react-router-dom';
 import Button from '../components/button';
+import Queries from '../graphql/queries';
+import Mutations from '../graphql/mutations';
 
 
 const PhaseDetails = () => {
   const { phaseId } = useParams<{ readonly phaseId: string }>();
-  const { loading, error, data } = useQuery<{ phase: Phase }>(GET_PHASE_BY_ID, { variables: { phaseId }});
+  const { loading, error, data } = useQuery<{ phase: Phase }>(Queries.GET_PHASE_BY_ID, { variables: { phaseId }});
 
-  const [markTaskAsComplete] = useMutation(MARK_TASK_AS_COMPLETED, { 
+  const [markTaskAsComplete] = useMutation(Mutations.MARK_TASK_AS_COMPLETED, { 
     variables: { taskId: 't2' },
     onCompleted: (data) => {
       console.log(data);
