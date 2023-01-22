@@ -39,7 +39,7 @@ const typeDefs = gql`
         task(phaseId: ID!, id: ID!): Task
 
         "GET a random task"
-        getRandomFact: RandomFact
+        randomFact: RandomFact
     }
 
     type Mutation {

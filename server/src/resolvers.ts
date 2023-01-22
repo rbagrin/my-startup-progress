@@ -40,7 +40,7 @@ export const resolvers = {
         async task(_: any, args: { phaseId: string, id: string }, { dataSources }: ResolverContext): Promise<Task> {
             return dataSources.mockDB.findPhaseTaskById(args.phaseId, args.id);
         },
-        async getRandomFact(_: any, __: any, { dataSources }: ResolverContext): Promise<RandomFact> {
+        async randomFact(_: any, __: any, { dataSources }: ResolverContext): Promise<RandomFact> {
             return dataSources.uselessFactsAPI.getRandomFact();
         },
     },

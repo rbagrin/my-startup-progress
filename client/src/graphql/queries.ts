@@ -52,7 +52,7 @@ export default class Queries {
 
     public static GET_RANDOM_FACT_ON_PHASE_COMPLETION = gql`
     query Query {
-        getRandomFact {
+        randomFact {
                 id
                 text
                 source

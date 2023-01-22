@@ -20,7 +20,7 @@ export default class Mutations {
                 }
             }
         }
-    `
+    `;
 
     public static MARK_TASK_AS_INCOMPLETE = gql`
         mutation MarkTaskAsIncomplete($taskId: ID!) {
@@ -46,7 +46,7 @@ export default class Mutations {
                 }
             }
         }
-    `
+    `;
 
     public static ADD_TASK_TO_PHASE = gql`
         mutation AddTaskToPhase($phaseId: ID!, $taskDescription: String!) {
