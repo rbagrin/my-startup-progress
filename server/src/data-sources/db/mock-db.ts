@@ -10,29 +10,51 @@ export default class MockDB {
     constructor() {
         const PHASE1: Phase = {
             id: uuid_v4(),
-            name: 'Phase 1',
-            description: 'This is phase 1',
+            name: 'Foundation',
+            description: 'This is the foundation of the startup',
+            completed: false,
+            tasks: [],
+        };
+        const PHASE2: Phase = {
+            id: uuid_v4(),
+            name: 'Discovery',
+            description: 'This is the discovery part of the startup',
             completed: false,
             tasks: [],
         };
         const TASK1: Task = {
             id: uuid_v4(),
-            description: 'aDSADa sd ad sa dsa dsafs bi',
+            description: 'Set up virtual office',
             completed: true,
             phaseId: PHASE1.id,
             phase: PHASE1,
         }
         const TASK2: Task = {
             id: uuid_v4(),
-            description: 'dsiadiah dsa dad sa dsa dsa',
+            description: 'Set mission & vision',
             completed: false,
             phaseId: PHASE1.id,
             phase: PHASE1,
         }
+        const TASK3: Task = {
+            id: uuid_v4(),
+            description: 'Create roadmap',
+            completed: true,
+            phaseId: PHASE2.id,
+            phase: PHASE2,
+        }
+        const TASK4: Task = {
+            id: uuid_v4(),
+            description: 'Competitor analysis',
+            completed: false,
+            phaseId: PHASE2.id,
+            phase: PHASE2,
+        }
         PHASE1.tasks = [TASK1, TASK2];
+        PHASE2.tasks = [TASK3, TASK4];
 
-        this.PHASES = [PHASE1];
-        this.TASKS = [TASK1, TASK2];
+        this.PHASES = [PHASE1, PHASE2];
+        this.TASKS = [TASK1, TASK2, TASK3, TASK4];
     }
 
     async findAllTasks(): Promise<Task[]> {
@@ -93,6 +115,8 @@ export default class MockDB {
 
         this.setPhaseCompletionState(phase);
 
+        this.validateEntirePhaseList();
+
         return { task, phase };
     }
 
@@ -111,6 +135,9 @@ export default class MockDB {
         
         phase.tasks.push(task);
         this.TASKS.push(task);
+
+        this.setPhaseCompletionState(phase);
+        this.validateEntirePhaseList();
 
         return { task, phase };
     }
@@ -162,6 +189,30 @@ export default class MockDB {
         const tasksExistAndAllAreCompleted = phase.tasks.length > 0 && !phase.tasks.some((task) => !task.completed);
         phase.completed = tasksExistAndAllAreCompleted;
     }
+
+    private validateEntirePhaseList(): void {
+        let foundFirstIncompleteList = false;
+
+        for (let i = 0; i < this.PHASES.length; i+=1) {
+            // If previously found a incomplete phase mark all the next phases and their tasks as incomplete
+            console.log(`START: i = ${i}, foundFirst = ${foundFirstIncompleteList}, phaseStatus=${this.PHASES[i].completed}`);
+            
+            if (foundFirstIncompleteList) {
+                console.log("MARK phase i as not complete");
+                
+                this.PHASES[i].completed = false;
+                for (let j = 0; j < this.PHASES[i].tasks.length; j += 1) {
+                    console.log(`mark task ${j} of phase ${i} as not complete`);
+                    this.PHASES[i].tasks[j].completed = false;
+                }
+            }
+
+            // If the first incomplete phase was found or the current phase is incomplete mark foundFirstIncompleteList = true
+            foundFirstIncompleteList = foundFirstIncompleteList || !this.PHASES[i].completed; //tasks.some((task) => !task.completed);
+
+            console.log(`END: i = ${i}, foundFirst = ${foundFirstIncompleteList}`);
+        }
+    } 
 }
 
 

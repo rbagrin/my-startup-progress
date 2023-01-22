@@ -27,10 +27,9 @@ const PhaseDetails = () => {
         {data?.phase && (
           <PhaseDetailsComponent phase={data.phase} />
         )}
+        <AddTaskComponent phaseId={phaseId!} noOfTasks={data?.phase.tasks.length ?? 0} />
       </div>
     </QueryResult>
-
-    <AddTaskComponent phaseId={phaseId!} />
   </div>;
 };
 

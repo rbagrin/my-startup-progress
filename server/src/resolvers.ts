@@ -1,7 +1,7 @@
 import { ApolloError } from "apollo-server";
 import { RandomFact } from "./data-sources/api/uselessfacts.interface";
 import { MyDataSources } from "./data-sources/data-sources.interfaces";
-import { Phase, Task } from "./interfaces";
+import { Phase, PhaseMutationResponse, PhasesMutationResponse, Task, TaskAndPhaseMutationResponse } from "./interfaces";
 
 interface ResolverContext {
     dataSources: MyDataSources,
@@ -9,7 +9,7 @@ interface ResolverContext {
 
 export const resolvers = {
     Phase: {
-        tasks(phase: Phase, _: any, { dataSources }: ResolverContext) {
+        tasks(phase: Phase, _: null, { dataSources }: ResolverContext) {
             try {
                 return dataSources.mockDB.findPhaseTasks(phase.id);
             } catch(error) {
@@ -18,7 +18,7 @@ export const resolvers = {
         }
     },
     Task: {
-        phase(task: Task, _: any, { dataSources }: ResolverContext) {
+        phase(task: Task, _: null, { dataSources }: ResolverContext) {
             try {
                 return dataSources.mockDB.findTaskPhase(task.id);
             } catch(error) {
@@ -27,25 +27,25 @@ export const resolvers = {
         }
     },
     Query: {
-        async phases(_: any, __: any, { dataSources }: ResolverContext): Promise<Phase[]> {
+        async phases(_: null, __: null, { dataSources }: ResolverContext): Promise<Phase[]> {
             try {
                 return dataSources.mockDB.findAllPhases();
             } catch(error) {
                 throw new ApolloError(error);
             }
         },
-        async phase(_: any, args: { id: string }, { dataSources }: ResolverContext): Promise<Phase> {
+        async phase(_: null, args: { id: string }, { dataSources }: ResolverContext): Promise<Phase> {
             return dataSources.mockDB.findPhaseById(args.id)
         },
-        async task(_: any, args: { phaseId: string, id: string }, { dataSources }: ResolverContext): Promise<Task> {
+        async task(_: null, args: { phaseId: string, id: string }, { dataSources }: ResolverContext): Promise<Task> {
             return dataSources.mockDB.findPhaseTaskById(args.phaseId, args.id);
         },
-        async randomFact(_: any, __: any, { dataSources }: ResolverContext): Promise<RandomFact> {
+        async randomFact(_: null, __: null, { dataSources }: ResolverContext): Promise<RandomFact> {
             return dataSources.uselessFactsAPI.getRandomFact();
         },
     },
     Mutation: {
-        async markTaskAsComplete(_: any, args: { taskId: string }, { dataSources }: ResolverContext): Promise<any> {
+        async markTaskAsComplete(_: null, args: { taskId: string }, { dataSources }: ResolverContext): Promise<TaskAndPhaseMutationResponse> {
             try {
                 const { task, phase } = await dataSources.mockDB.markTaskAsComplete(args.taskId);
 
@@ -66,7 +66,7 @@ export const resolvers = {
                 }
             }
         },
-        async markTaskAsIncomplete(_: any, args: { taskId: string }, { dataSources }: ResolverContext): Promise<any> {
+        async markTaskAsIncomplete(_: null, args: { taskId: string }, { dataSources }: ResolverContext): Promise<TaskAndPhaseMutationResponse> {
             try {
                 const { task, phase } = await dataSources.mockDB.markTaskAsIncomplete(args.taskId);
 
@@ -87,7 +87,7 @@ export const resolvers = {
                 }
             }
         },
-        async addTaskToPhase(_: any, args: { phaseId: string, taskDescription: string }, { dataSources }: ResolverContext): Promise<any> {
+        async addTaskToPhase(_: null, args: { phaseId: string, taskDescription: string }, { dataSources }: ResolverContext): Promise<TaskAndPhaseMutationResponse> {
            try {            
                 const { task, phase } = await dataSources.mockDB.addTaskToPhase(args.phaseId, args.taskDescription);
                 return {
@@ -107,7 +107,7 @@ export const resolvers = {
                 };
            }
         },
-        async addPhase(_: any, args: { name: string, phaseDescription: string}, { dataSources }: ResolverContext): Promise<any> {
+        async addPhase(_: null, args: { name: string, phaseDescription: string}, { dataSources }: ResolverContext): Promise<PhasesMutationResponse> {
             try {
                 const phases = await dataSources.mockDB.addPhase(args.name, args.phaseDescription);
                 return {
@@ -125,9 +125,9 @@ export const resolvers = {
                 };
             }
         } ,
-        async deleteTask(_: any, args: { phaseId: string, taskId: string }, { dataSources }: ResolverContext): Promise<any> {
+        async deleteTask(_: null, args: { phaseId: string, taskId: string }, { dataSources }: ResolverContext): Promise<PhaseMutationResponse> {
             try {
-                const phase = dataSources.mockDB.deletePhaseTask(args.phaseId, args.taskId);
+                const phase = await dataSources.mockDB.deletePhaseTask(args.phaseId, args.taskId);
                 return {
                     code: 200,
                     success: true,
@@ -143,7 +143,7 @@ export const resolvers = {
                 };
             }
         },
-        async deletePhase(_: any, args: { phaseId: string }, { dataSources }: ResolverContext): Promise<any> {
+        async deletePhase(_: null, args: { phaseId: string }, { dataSources }: ResolverContext): Promise<PhasesMutationResponse> {
             try {
                 const phases = await dataSources.mockDB.deletePhase(args.phaseId);
                 return {

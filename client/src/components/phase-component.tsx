@@ -40,7 +40,10 @@ export const PhaseComponent = ({ phase }: PhaseProps) => {
                 </div>
             </div>
 
-            <p className='text-sm font-light'>{completedTasks}/{totalTasks} completed tasks</p>                
+            {totalTasks > 0 ? 
+                <p className='text-sm font-light'>{completedTasks}/{totalTasks} completed tasks</p> :
+                <p className='text-sm font-light text-red-500'>Add a task to this phase to be able to complete it!</p>
+            }            
         </div>
     );
 }

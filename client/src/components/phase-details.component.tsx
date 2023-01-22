@@ -26,6 +26,7 @@ export const PhaseDetailsComponent = ({ phase }: PhaseDetailsComponentProps) => 
       
     const [markTaskAsIncomplete] = useMutation(Mutations.MARK_TASK_AS_INCOMPLETE, { 
         variables: { taskId: '' },
+        refetchQueries: [{ query: Queries.GET_PHASES }],
         onCompleted: (data) => {
             console.log(data);
         }
@@ -40,9 +41,7 @@ export const PhaseDetailsComponent = ({ phase }: PhaseDetailsComponentProps) => 
 
     const [deletePhaseById] = useMutation(Mutations.DELETE_PHASE_BY_ID, { 
         variables: { phaseId: phase.id },
-        refetchQueries: [
-        { query: Queries.GET_PHASES },
-        ],
+        refetchQueries: [{ query: Queries.GET_PHASES }],
         onCompleted: (data) => {
             console.log(data);
         }
@@ -75,10 +74,12 @@ export const PhaseDetailsComponent = ({ phase }: PhaseDetailsComponentProps) => 
                 </div>
             </div>
 
-            <div className='flex flex-row justify-between'>
-                <p className='text-sm font-light pl-5'>Tasks</p>
-                <p className='text-sm font-light pr-5'>Actions</p>
-            </div>
+            {phase.tasks.length > 0 && (
+                <div className='flex flex-row justify-between'>
+                    <p className='text-sm font-light pl-5'>Tasks</p>
+                    <p className='text-sm font-light pr-5'>Actions</p>
+                </div>
+            )}
 
             {phase.tasks.map((task, index) => (
                 <div key={index} className='flex flex-row gap-5 mb-5 bg-gray-100 rounded-md justify-between'>
