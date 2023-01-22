@@ -1,10 +1,18 @@
 # My Startup Progress
+
+### Comments
+* Currently, when a phase is reopened, all subsequent phases and their associated tasks are also marked as incomplete. A more efficient approach would be to leave the tasks in subsequent phases as completed, and only mark the phases as incomplete. Should also ensure that a phase can only be marked as completed once all its tasks and all preceding phases have been completed.
+* Did not implement edit task and edit phase. Added these to my todo list you can find below.
+
 ### TODOs
 - [X] Design database schema.
 - [ ] Store FE data in local storage (not sure what should I store in the local storage right now?).
 - [ ] Right now the order of the phases is the order the phases were added to the BD. Improve this using by adding `prev` and `next` Phase attritbutes.
 - [ ] Update task. Now you have to delete the task and add it again.
 - [ ] !!! Update phase. Now you have to delete the phase and all the following phases, then you have to add all of them + all their tasks again.
+- [ ] Move MockDB constructor hardcoded data to a util or helper file.
+- [ ] TESTS
+- [ ] Implement the phase completion mechanism so if one phase is reopened, all the following phases are reopened, but their tasks are kept as completed.
 
 ## REQUIREMENTS
 <img width="587" alt="image" src="https://user-images.githubusercontent.com/37870015/213943742-96325bcf-444c-4228-8f1c-0059a5dfdf4d.png">
