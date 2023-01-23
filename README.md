@@ -5,7 +5,7 @@
 * Did not implement edit task and edit phase. Added these to my todo list you can find below.
 
 ### TODOs
-- [X] Design database schema.
+- [X] Design database schema. (FILE: /my-startup-progress/server/src/data-sources/db/db-schema.ts)
 - [ ] Store FE data in local storage (not sure what should I store in the local storage right now?).
 - [ ] Right now the order of the phases is the order the phases were added to the BD. Improve this using by adding `prev` and `next` Phase attritbutes.
 - [ ] Update task. Now you have to delete the task and add it again.
