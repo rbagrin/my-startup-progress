@@ -1,3 +1,3 @@
-# Catstronauts - client
+# My Startup Progress - client
 
-The starting point of the `client` code for Odyssey Lift-off I course.
+The starting point of the `client` code for My Startup Progress.
